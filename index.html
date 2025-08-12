@@ -1,46 +1,350 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TechieJack — Portfolio</title>
 
-<!-- Link to Google Font (Roboto) -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
 
-<head><body style="background-image: url('https://wallpapers.com/images/hd/4k-oled-background-qdvijfjpxohfcw90.jpg'); background-repeat: no-repeat; background-size: cover; text-align: center; color: rgb(255, 255, 255); font-family: 'Roboto', sans-serif; /* Apply the custom font */ "
+  <style>
+    :root{
+      --bg:#0b0b10;
+      --panel:#11111a;
+      --panel-2:#0d0d15;
+      --text:#eef0f4;
+      --muted:#aab3c2;
+      --pink:#ff4d87;
+      --purple:#7a3eff;
+      --cyan:#00e5ff;
+      --ring:linear-gradient(135deg,var(--pink),var(--purple),var(--cyan));
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: "Roboto", system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      background:
+        radial-gradient(900px 420px at 12% -10%, rgba(255,77,135,.20), transparent 60%),
+        radial-gradient(900px 420px at 100% 0%, rgba(0,229,255,.18), transparent 60%),
+        var(--bg) no-repeat center/cover fixed url('https://wallpapers.com/images/hd/4k-oled-background-qdvijfjpxohfcw90.jpg');
+      background-blend-mode: screen, screen, normal;
+    }
 
-          <div class="branding">
-            <h1>Hi My Name Is TechieJack</h1>
-             <p><p>Creator Of <a href="https://t3chiejack.github.io/Hub/">Game Hub</a></p>
+    .wrap{max-width:1200px; margin:0 auto; padding:24px 16px 80px}
+
+    /* Top glow bar */
+    .topbar{position:fixed; inset:0 0 auto 0; height:3px; z-index:50; background:var(--ring);
+      box-shadow:0 0 24px rgba(255,77,135,.35);}
+
+    header{
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px;
+      margin-top:18px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:14px;
+    }
+    .avatar{
+      width:80px; height:80px; border-radius:50%; padding:3px; background:var(--ring);
+      filter: drop-shadow(0 0 20px rgba(255,77,135,.25));
+    }
+    .avatar-inner{
+      width:100%; height:100%; border-radius:50%; display:grid; place-items:center;
+      background:linear-gradient(180deg,#1a1a27,#0c0c13);
+      font-weight:900; letter-spacing:.5px; font-size:28px;
+    }
+    .title{line-height:1}
+    .title h1{margin:0; font-size:34px; font-weight:900}
+    .title p{margin:.35rem 0 0; color:var(--muted)}
+    .badge{
+      display:inline-block; margin-left:.5rem; padding:6px 10px; border-radius:999px; font-size:12px;
+      color:#fff; background:linear-gradient(90deg, rgba(255,77,135,.25), rgba(122,62,255,.25));
+      border:1px solid rgba(255,255,255,.1); backdrop-filter:blur(6px);
+    }
+
+    .links{display:flex; gap:10px; flex-wrap:wrap}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px;
+      text-decoration:none; color:#fff; font-weight:700; font-size:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .chip:hover{ transform:translateY(-2px); border-color:rgba(255,255,255,.2); box-shadow:0 8px 22px rgba(255,77,135,.18)}
+
+    section{margin-top:28px}
+    section h2{
+      font-size:26px; margin:0 0 14px 0; font-weight:900; letter-spacing:.2px;
+      background:var(--ring); -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 6px 24px rgba(255,77,135,.18);
+    }
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)), var(--panel);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px; padding:18px;
+      box-shadow: inset 0 0 0 1px rgba(255,77,135,.06), 0 10px 30px rgba(0,0,0,.35);
+    }
+    .about p{margin:.4rem 0; color:#d7dbe3}
+
+    /* Controls */
+    .controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0 6px}
+    .search{
+      flex:1; min-width:220px; position:relative;
+    }
+    .search input{
+      width:100%; padding:12px 14px 12px 40px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05); color:#fff; outline:none;
+    }
+    .search svg{position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.6}
+    .toggle{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px;
+      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); cursor:pointer; user-select:none;
+    }
+
+    /* Grid */
+    .grid{
+      display:grid; gap:16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    .card{
+      position:relative; border-radius:20px; overflow:hidden; aspect-ratio: 1 / 1;
+      background:var(--panel-2); border:1px solid rgba(255,255,255,.08);
+      box-shadow: inset 0 0 0 1px rgba(255,77,135,.08), 0 10px 30px rgba(0,0,0,.45);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      isolation:isolate;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(255,255,255,.16);
+      box-shadow: inset 0 0 0 1px rgba(255,77,135,.18), 0 20px 60px rgba(255,77,135,.20), 0 12px 28px rgba(0,0,0,.5);
+    }
+    .ring{position:absolute; top:14px; left:14px; width:66px; height:66px; border-radius:50%; padding:3px; background:var(--ring)}
+    .ring-inner{
+      width:100%; height:100%; border-radius:50%; display:grid; place-items:center;
+      background:linear-gradient(180deg,#1c1c2a,#0c0c14); font-weight:900; letter-spacing:.3px;
+    }
+    .pill{position:absolute; top:16px; right:14px; padding:6px 10px; border-radius:999px; font-size:12px;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08)}
+    .content{position:absolute; inset:auto 14px 14px 14px; display:flex; flex-direction:column; gap:10px;
+      background: linear-gradient(180deg, rgba(11,11,16,0), rgba(11,11,16,.85) 35%); padding-top:60px}
+    .name{font-weight:900; font-size:18px}
+    .desc{color:#cdd3de; font-size:13px; line-height:1.4; min-height:2.6em}
+    .meta{display:flex; gap:10px; font-size:12px; color:#b7c0cf}
+    .tags{display:flex; flex-wrap:wrap; gap:6px}
+    .tag{font-size:11px; padding:5px 8px; border-radius:999px; color:#fff;
+      background:linear-gradient(90deg, rgba(255,77,135,.24), rgba(122,62,255,.24));
+      border:1px solid rgba(255,255,255,.08);}
+    .actions{display:flex; gap:8px}
+    .btn{
+      flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:10px 12px; border-radius:12px; font-size:13px; font-weight:800; text-decoration:none; color:#fff;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .btn:hover{ transform: translateY(-2px); border-color:rgba(255,255,255,.18); box-shadow: 0 8px 20px rgba(255,77,135,.18)}
+    .btn[aria-disabled="true"]{opacity:.5; pointer-events:none}
+
+    .empty{display:grid; place-items:center; min-height:30vh; text-align:center; color:#cdd3de}
+    .empty .big{font-weight:900; font-size:20px; margin-bottom:6px;
+      background: linear-gradient(90deg, #fff, #caa7ff 60%, #7adfff); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+    footer{margin-top:30px; text-align:center; color:#b8c1cf; font-size:12px}
+    .srch-note{color:#aab3c2; font-size:12px; margin-left:6px}
+
+    @media (prefers-reduced-motion: reduce){
+      .chip,.btn,.card{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="avatar" aria-hidden="true"><div class="avatar-inner">TJ</div></div>
+        <div class="title">
+          <h1>TechieJack <span class="badge">Neon Channel Grid</span></h1>
+          <p>Creator of <a class="chip" href="https://t3chiejack.github.io/Hub/" target="_blank" rel="noopener">Game Hub ↗</a></p>
         </div>
+      </div>
+
+      <nav class="links" aria-label="Quick links">
+        <a class="chip" href="https://t3chiejack.github.io/Blog/" target="_blank" rel="noopener">Tech Blog ↗</a>
+        <a class="chip" href="https://github.com/T3chieJack" target="_blank" rel="noopener">GitHub ↗</a>
+      </nav>
     </header>
 
-   
-    
-        
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Fluent in Basic Html</p>
-        <p>I am A Maker who likes to code python and html.</p>
-        <p>I Like To Make Lots Of Games And Apps</p>
-        <!-- Add dynamic content like AI-powered intro here -->
+    <section id="about" class="panel about">
+      <h2>About Me</h2>
+      <p>Fluent in basic HTML. Maker who codes in Python and HTML.</p>
+      <p>I like building games and apps — and shipping them.</p>
     </section>
 
     <section id="projects">
-<h2> Projects</h2>
-<a href="https://t3chiejack.github.io/Hub/">My Games Hub</a>
+      <h2>Projects</h2>
 
+      <div class="controls">
+        <div class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-3.9-3.9M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="search" type="search" placeholder="Search repos…" aria-label="Search projects by name or description">
+        </div>
+        <label class="toggle"><input id="no-forks" type="checkbox" checked> Hide forks</label>
+        <label class="toggle"><input id="no-archived" type="checkbox" checked> Hide archived</label>
+        <span class="srch-note" id="count-note"></span>
+      </div>
 
-    </section>
-
-    <section id="blog">
-        <h2>Tech Blog</h2>
-        <a href="https://t3chiejack.github.io/Blog/">Blog</a>
-    </section>
-
-    <section id="Github">
-        <h2>Github Profile</h2>
-        <a href="https://github.com/T3chieJack">T3chieJack</a>
-
+      <div id="grid" class="grid" aria-live="polite"></div>
+      <div id="empty" class="empty" hidden>
+        <div>
+          <div class="big">No repos match your filters</div>
+          <div>Try clearing search or toggles.</div>
+        </div>
+      </div>
     </section>
 
     <footer>
-        <p>&copy; TechieJack </p>
+      <p>&copy; <span id="year"></span> TechieJack</p>
     </footer>
+  </div>
+
+  <script>
+    // --------- Config ----------
+    const GH_USER = "T3chieJack";
+
+    // --------- Utilities ----------
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const escapeHTML = (str) => String(str ?? "").replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":"&#039;"}[s]));
+    const fmt = (n) => Intl.NumberFormat().format(n);
+
+    // --------- DOM refs ----------
+    const grid = $("#grid");
+    const empty = $("#empty");
+    const searchInput = $("#search");
+    const noForks = $("#no-forks");
+    const noArchived = $("#no-archived");
+    const countNote = $("#count-note");
+    $("#year").textContent = new Date().getFullYear();
+
+    // --------- Data store ----------
+    let repos = [];
+    let filtered = [];
+
+    // --------- Render ----------
+    function makeCard(r){
+      const lang = r.language ? `<span class="tag">${escapeHTML(r.language)}</span>` : "";
+      const topics = (r.topics || []).slice(0,3).map(t=>`<span class="tag">${escapeHTML(t)}</span>`).join("");
+      const desc = r.description || "No description provided.";
+      const hasHome = r.homepage && r.homepage.trim() !== "";
+      const logoText = (r.name || "?").slice(0,2).toUpperCase();
+
+      const stars = r.stargazers_count ? `<span title="Stars">★ ${fmt(r.stargazers_count)}</span>` : "";
+      const updated = new Date(r.pushed_at || r.updated_at);
+      const meta = `<div class="meta"><span>Updated ${updated.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'})}</span>${stars}</div>`;
+
+      return `
+        <article class="card" role="group" aria-label="${escapeHTML(r.name)}">
+          <div class="ring" aria-hidden="true"><div class="ring-inner">${escapeHTML(logoText)}</div></div>
+          <div class="pill">${r.fork ? "Fork" : "Project"}</div>
+          <div class="content">
+            <div class="name">${escapeHTML(r.name)}</div>
+            <div class="desc">${escapeHTML(desc)}</div>
+            ${meta}
+            <div class="tags">${lang}${topics}</div>
+            <div class="actions">
+              <a class="btn" href="${escapeHTML(r.html_url)}" target="_blank" rel="noopener">Repo</a>
+              ${hasHome ? `<a class="btn" href="${escapeHTML(r.homepage)}" target="_blank" rel="noopener">Live</a>` : `<span class="btn" aria-disabled="true">Live</span>`}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function render(){
+      const q = searchInput.value.trim().toLowerCase();
+      filtered = repos.filter(r => {
+        if (noForks.checked && r.fork) return false;
+        if (noArchived.checked && r.archived) return false;
+        if (!q) return true;
+        const hay = `${r.name} ${r.description||""} ${(r.topics||[]).join(" ")}`.toLowerCase();
+        return hay.includes(q);
+      });
+
+      countNote.textContent = filtered.length ? `${filtered.length} repo${filtered.length>1?'s':''}` : "";
+      if (!filtered.length){
+        grid.innerHTML = "";
+        empty.hidden = false;
+        return;
+      }
+      empty.hidden = true;
+      grid.innerHTML = filtered.map(makeCard).join("");
+    }
+
+    // --------- Fetch GitHub repos (with topics) ----------
+    async function fetchRepos(){
+      // skeleton shimmer
+      grid.innerHTML = Array.from({length:6}).map(()=>`
+        <article class="card">
+          <div class="ring"><div class="ring-inner">…</div></div>
+          <div class="pill">Loading</div>
+          <div class="content">
+            <div class="name" style="opacity:.6">Loading…</div>
+            <div class="desc" style="opacity:.5">Fetching repositories…</div>
+            <div class="tags"></div>
+            <div class="actions"><span class="btn" aria-disabled="true">Repo</span><span class="btn" aria-disabled="true">Live</span></div>
+          </div>
+        </article>
+      `).join("");
+
+      try{
+        const base = `https://api.github.com/users/${GH_USER}/repos?per_page=100&sort=updated`;
+        const res = await fetch(base, {headers: {"Accept":"application/vnd.github+json"}});
+        if(!res.ok) throw new Error(`GitHub API: ${res.status}`);
+        const data = await res.json();
+
+        // Optionally fetch topics for each repo (best-effort; skip on errors)
+        // To reduce requests, only fetch for the first 30 updated repos
+        const top = data.slice(0, 30);
+
+        const withTopics = await Promise.all(top.map(async r => {
+          try{
+            const tr = await fetch(`https://api.github.com/repos/${GH_USER}/${encodeURIComponent(r.name)}/topics`,
+              {headers: {"Accept":"application/vnd.github+json"}});
+            if(tr.ok){
+              const t = await tr.json();
+              r.topics = t.names || [];
+            }
+          }catch(_){}
+          return r;
+        }));
+
+        // combine: keep topics for first 30, others without
+        const topicMap = new Map(withTopics.map(r => [r.id, r.topics || []]));
+        repos = data.map(r => ({...r, topics: topicMap.get(r.id) || []}));
+
+        render();
+      }catch(err){
+        console.error(err);
+        empty.hidden = false;
+        empty.innerHTML = `
+          <div>
+            <div class="big">Couldn’t load GitHub repos</div>
+            <div>Please try again later. (If rate-limited, it usually resets soon.)</div>
+          </div>`;
+      }
+    }
+
+    // --------- Events ----------
+    searchInput.addEventListener("input", render);
+    noForks.addEventListener("change", render);
+    noArchived.addEventListener("change", render);
+
+    // --------- Boot ----------
+    fetchRepos();
+  </script>
+</body>
+</html>
