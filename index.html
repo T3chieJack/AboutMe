@@ -104,6 +104,19 @@
       background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); cursor:pointer; user-select:none;
     }
 
+    .avatar{
+  width:80px; height:80px; border-radius:50%; padding:3px;
+  background: linear-gradient(135deg,#ff4d87,#7a3eff,#00e5ff);
+}
+.avatar-inner{
+  width:100%; height:100%; border-radius:50%; overflow:hidden;
+  background:#0c0c13; /* subtle backdrop behind image */
+}
+.avatar-inner img{
+  width:100%; height:100%; display:block; object-fit:cover; border-radius:50%;
+}
+
+
     /* Grid */
     .grid{
       display:grid; gap:16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -359,6 +372,7 @@
   </script>
 </body>
 </html>
+
 
 
 
